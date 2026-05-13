@@ -1,0 +1,148 @@
+// app.jsx
+
+const { useState, useEffect } = React;
+
+// ----------------------------------------------------
+// Component 1: TechTag
+// Displays a single technology tag with styling
+// ----------------------------------------------------
+const TechTag = ({ name }) => {
+    return (
+        <span className="tech-tag">{name}</span>
+    );
+};
+
+// ----------------------------------------------------
+// Component 2: ProjectCard
+// Displays individual project details
+// ----------------------------------------------------
+const ProjectCard = ({ project }) => {
+    return (
+        <div className="project-card glass-card">
+            <img src={project.image} alt={project.title} className="project-img" />
+            <div className="project-content">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="tech-stack">
+                    {project.technologies.map((tech, index) => (
+                        <TechTag key={index} name={tech} />
+                    ))}
+                </div>
+                <div className="project-links">
+                    {project.githubUrl && (
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-github"></i> GitHub
+                        </a>
+                    )}
+                    {project.demoUrl && (
+                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ----------------------------------------------------
+// Component 3: ProjectList
+// Maps and renders the list of projects
+// ----------------------------------------------------
+const ProjectList = () => {
+    // Fake data for the CV
+    const projects = [
+        {
+            id: 1,
+            title: "E-Commerce Plateform",
+            description: "Une plateforme de vente en ligne complète avec panier, paiement simulé et tableau de bord administrateur.",
+            technologies: ["React", "Node.js", "Express", "MongoDB", "CSS Modules"],
+            image: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop",
+            githubUrl: "https://github.com/anass-lachguer/ecommerce",
+            demoUrl: "https://demo.ecommerce.com"
+        },
+        {
+            id: 2,
+            title: "Task Management App",
+            description: "Application de gestion de tâches inspirée de Trello avec fonctionnalité de glisser-déposer et synchronisation en temps réel.",
+            technologies: ["JavaScript", "HTML5", "CSS3", "Firebase"],
+            image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop",
+            githubUrl: "https://github.com/anass-lachguer/task-app",
+            demoUrl: "#"
+        },
+        {
+            id: 3,
+            title: "Portfolio Web",
+            description: "Mon portfolio personnel, conçu pour être interactif, rapide et visuellement attrayant.",
+            technologies: ["React", "jQuery", "CSS Natif"],
+            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+            githubUrl: "https://github.com/anass-lachguer/portfolio",
+            demoUrl: "#"
+        }
+    ];
+
+    return (
+        <div className="projects-grid">
+            {projects.map(project => (
+                <ProjectCard key={project.id} project={project} />
+            ))}
+        </div>
+    );
+};
+
+// ----------------------------------------------------
+// Component 4: ContactForm
+// A functional component for the contact form
+// ----------------------------------------------------
+const ContactForm = () => {
+    // Note: React handles the rendering, but the validation logic
+    // is enforced via jQuery in script.js as per requirements.
+    
+    return (
+        <div className="glass-card">
+            <form id="contactForm" className="contact-form" noValidate>
+                <div id="formSuccess" className="form-success">
+                    <i className="fas fa-check-circle"></i> Message envoyé avec succès !
+                </div>
+                
+                <div className="form-group" id="group-name">
+                    <label htmlFor="name">Nom complet</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" />
+                    <span className="error-msg">Veuillez entrer votre nom.</span>
+                </div>
+                
+                <div className="form-group" id="group-email">
+                    <label htmlFor="email">Adresse email</label>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" />
+                    <span className="error-msg">Veuillez entrer un email valide.</span>
+                </div>
+                
+                <div className="form-group" id="group-message">
+                    <label htmlFor="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Votre message ici..."></textarea>
+                    <span className="error-msg">Le message ne peut pas être vide.</span>
+                </div>
+                
+                <button type="submit" className="btn btn-primary" id="submitBtn">
+                    Envoyer le message <i className="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    );
+};
+
+// ====================================================
+// Rendering the React Roots
+// ====================================================
+const projectsRootElement = document.getElementById('projects-root');
+const contactRootElement = document.getElementById('contact-root');
+
+if (projectsRootElement) {
+    const root = ReactDOM.createRoot(projectsRootElement);
+    root.render(<ProjectList />);
+}
+
+if (contactRootElement) {
+    const root = ReactDOM.createRoot(contactRootElement);
+    root.render(<ContactForm />);
+}
